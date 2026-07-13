@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: theme('colors.bg.primary');
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: rgba(79, 141, 255, 0.35);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
+/* Visible, consistent focus ring for keyboard users */
+:focus-visible {
+  outline: 2px solid theme('colors.accent.DEFAULT');
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: theme('colors.accent.DEFAULT');
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+@layer components {
+  /*
+   * Deliberately NOT using backdrop-blur here. This class is applied to
+   * dozens of in-flow cards per page — real backdrop-filter blur on that
+   * many simultaneous elements is one of the most expensive things a
+   * browser can paint, and was the main cause of scroll/mouse jank.
+   * A solid translucent background + border reads as "glass" just as
+   * well for cards that sit in normal document flow (as opposed to
+   * floating over scrolling content). True floating overlays — the
+   * developer console and recruiter quick-view modals — opt back into
+   * real blur via `.glass-panel-overlay` below, since there are only
+   * ever one or two of those on screen at once.
+   */
+  .glass-panel {
+    @apply relative rounded-xl2 border border-border bg-white/[0.035] shadow-card;
+  }
+
+  .glass-panel-overlay {
+    @apply backdrop-blur-xl;
+  }
+
+  .section-container {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent via-accent-cyan to-accent-purple bg-clip-text text-transparent;
+  }
+
+  /*
+   * No mix-blend-mode here on purpose: blending a static layer against
+   * the animated orbs behind it forces the browser to recomposite the
+   * whole viewport every frame. A plain low-opacity layer gives nearly
+   * the same subtle grain for a fraction of the cost.
+   */
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.custom-cursor-active,
+.custom-cursor-active a,
+.custom-cursor-active button {
+  cursor: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor-active,
+  .custom-cursor-active a,
+  .custom-cursor-active button {
+    cursor: auto;
+  }
+}
