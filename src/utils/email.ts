@@ -70,12 +70,23 @@ export async function submitContactForm(data: ContactFormData): Promise<void> {
   }
 
   if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY) {
-    // Dynamically imported through a non-literal specifier so neither
-    // TypeScript nor Rollup try to resolve "@emailjs/browser" at build
-    // time — it's an optional dependency the build must succeed without.
-    // Install it with: npm install @emailjs/browser
-    const emailjsSpecifier = '@emailjs/browser';
-    const emailjs = await import(/* @vite-ignore */ emailjsSpecifier);
+    // This used to be imported through a variable specifier with
+    // `/* @vite-ignore */` so the build could succeed even if the package
+    // wasn't installed. That trick has a real cost, though: `@vite-ignore`
+    // tells Rollup not to analyze or bundle this import at all, so in the
+    // *production build* the browser is left trying to run a native
+    // `import('@emailjs/browser')` — and browsers cannot resolve a bare
+    // package name like that on their own without a bundler behind it.
+    // The result: this silently failed on the live site (with no network
+    // request ever reaching EmailJS) even once the package was installed,
+    // while working fine in `npm run dev`, where Vite's dev server *does*
+    // resolve bare specifiers on the fly — which is exactly why this only
+    // showed up after deploying.
+    //
+    // Now that @emailjs/browser is an actual installed dependency, importing
+    // it directly (a literal string, no @vite-ignore) lets Rollup bundle it
+    // into a real, resolvable chunk at build time, the normal way.
+    const emailjs = await import('@emailjs/browser');
     await emailjs.send(
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
