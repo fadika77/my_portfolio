@@ -4,7 +4,7 @@
  * the sitemap, and structured data.
  */
 export const siteConfig = {
-  siteUrl: import.meta.env.VITE_SITE_URL || 'https://your-domain.com',
+  siteUrl: import.meta.env.VITE_SITE_URL || 'https://my-portfolio-ten-beta-29wk7xs7bv.vercel.app',
   siteName: 'Fadi Kanaani | Junior Software Engineer',
   defaultTitle: 'Fadi Kanaani | Junior Software Engineer',
   defaultDescription:
