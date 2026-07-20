@@ -9,15 +9,25 @@ interface RevealOnScrollProps {
   className?: string;
   delay?: number;
   as?: 'div' | 'section' | 'li';
+  /**
+   * When true (default), the element reveals once and stays visible —
+   * matches every existing use of this component. Pass `false` to make it
+   * two-way: the element animates back to its `hidden` variant when it
+   * scrolls out of view, then plays the entrance again next time it comes
+   * back — used for a handful of "dramatic" sections that should feel
+   * alive as you scroll past them, not just on first arrival.
+   */
+  once?: boolean;
 }
 
-/** Wraps content so it animates in once when it scrolls into view. */
+/** Wraps content so it animates in when it scrolls into view (once, or every time). */
 export function RevealOnScroll({
   children,
   variants = fadeUp,
   className,
   delay = 0,
   as = 'div',
+  once = true,
 }: RevealOnScrollProps) {
   const { reduceMotion } = useMotionPreference();
   // Cast to a single component type — div/section/li all accept the same
@@ -35,7 +45,7 @@ export function RevealOnScroll({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ once, margin: '-80px' }}
       variants={variants}
       transition={{ delay }}
     >

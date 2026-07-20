@@ -6,6 +6,7 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { MagneticButton } from '@/components/common/MagneticButton';
 import { RevealOnScroll } from '@/components/animations/RevealOnScroll';
+import { dramaticPop } from '@/components/animations/variants';
 import { RecruiterQuickView } from './RecruiterQuickView';
 
 /** Condensed contact call-to-action shown on the homepage. */
@@ -13,7 +14,11 @@ export function ContactCTA() {
   return (
     <section className="relative py-24 sm:py-32" aria-labelledby="contact-cta-heading">
       <Container>
-        <RevealOnScroll className="glass-panel relative overflow-hidden p-10 text-center sm:p-16">
+        <RevealOnScroll
+          className="glass-panel relative overflow-hidden p-10 text-center sm:p-16"
+          variants={dramaticPop}
+          once={false}
+        >
           <div className="pointer-events-none absolute inset-0 bg-radial-fade opacity-70" aria-hidden="true" />
           <div className="relative">
             <h2 id="contact-cta-heading" className="text-balance font-heading text-3xl font-semibold text-text-main sm:text-4xl">

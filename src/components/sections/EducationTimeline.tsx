@@ -3,6 +3,7 @@ import { education } from '@/data/education';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/common/SectionHeading';
 import { RevealOnScroll } from '@/components/animations/RevealOnScroll';
+import { slideInLeft, slideInRight } from '@/components/animations/variants';
 import { LanguagesSection } from './LanguagesSection';
 
 export function EducationTimeline() {
@@ -12,8 +13,12 @@ export function EducationTimeline() {
         <SectionHeading eyebrow="Education" title="Four years, one degree, many projects." id="education-heading" />
 
         <div className="mt-12 space-y-6">
-          {education.map((entry) => (
-            <RevealOnScroll key={entry.institution}>
+          {education.map((entry, index) => (
+            <RevealOnScroll
+              key={entry.institution}
+              variants={index % 2 === 0 ? slideInLeft : slideInRight}
+              once={false}
+            >
               <div className="glass-panel relative overflow-hidden p-6 sm:p-8">
                 <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-accent/10 blur-3xl" aria-hidden="true" />
                 <div className="relative flex flex-col gap-6 sm:flex-row sm:items-start">

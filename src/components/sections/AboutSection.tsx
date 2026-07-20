@@ -5,7 +5,7 @@ import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/common/SectionHeading';
 import { RevealOnScroll } from '@/components/animations/RevealOnScroll';
 import { ValueCard } from './ValueCard';
-import { staggerContainer } from '@/components/animations/variants';
+import { staggerContainer, slideInLeft, slideInRight } from '@/components/animations/variants';
 import { motion } from 'framer-motion';
 
 const ICONS = [Layers, Target, Sparkles, Users];
@@ -19,13 +19,13 @@ export function AboutSection() {
         <div className="mt-10 grid gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div className="space-y-5">
             {profile.aboutParagraphs.map((paragraph, index) => (
-              <RevealOnScroll key={index} delay={index * 0.08}>
+              <RevealOnScroll key={index} delay={index * 0.08} variants={slideInLeft} once={false}>
                 <p className="text-pretty text-base leading-relaxed text-text-muted sm:text-lg">
                   {paragraph}
                 </p>
               </RevealOnScroll>
             ))}
-            <RevealOnScroll delay={0.2}>
+            <RevealOnScroll delay={0.2} variants={slideInLeft} once={false}>
               <Link
                 to="/about"
                 className="inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-accent hover:text-accent-cyan"
@@ -35,7 +35,7 @@ export function AboutSection() {
             </RevealOnScroll>
           </div>
 
-          <RevealOnScroll className="glass-panel h-fit p-6" delay={0.1}>
+          <RevealOnScroll className="glass-panel h-fit p-6" delay={0.1} variants={slideInRight} once={false}>
             <p className="mb-4 font-mono text-xs uppercase tracking-widest text-text-muted">
               Personal info
             </p>
